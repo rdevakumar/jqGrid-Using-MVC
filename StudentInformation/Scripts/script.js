@@ -1,4 +1,5 @@
-﻿$(function () {
+﻿/// <reference path="jquery.jqGrid.js" />
+$(function () {
     $("#jqGrid").jqGrid({
         url: "/Student/GetStudents",
         datatype: 'json',
@@ -27,8 +28,11 @@
             Id: "0"
         },
         autowidth: true,
-        multiselect: false
-    }).navGrid('#jqControls', { edit: true, add: true, del: true, search: false, refresh: true },
+        multiselect: false,
+    }).navGrid('#jqControls', {
+        edit: true, add: true, del: true, search: true,
+                                searchtext: "Search Student", refresh: true
+    },
         {
             zIndex: 100,
             url: '/Student/Edit',
@@ -64,5 +68,12 @@
                     alert(response.responseText);
                 }
             }
+        },
+        {
+            zIndex: 100,
+            caption: "Search Students",
+            sopt: ['cn']
         });
 });
+
+

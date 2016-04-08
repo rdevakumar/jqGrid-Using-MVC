@@ -17,7 +17,7 @@ namespace StudentInformation.Controllers
         {
             return View();
         }
-        public JsonResult GetStudents(string sidx, string sort, int page, int rows)  
+        public JsonResult GetStudents(string sidx, string sort, int page, int rows, bool _search, string searchField, string searchOper, string searchString)  
         {
             ApplicationDbContext db = new ApplicationDbContext();
             sort = (sort == null) ? "" : sort;
@@ -34,6 +34,24 @@ namespace StudentInformation.Controllers
                         t.ClassName,
                         t.DateOfAdmission
                     });
+            if(_search)
+            {
+                switch(searchField)
+                {
+                    case "Name":
+                        StudentList=StudentList.Where(t => t.Name.Contains(searchString));
+                        break;
+                    case "FatherName":
+                        StudentList = StudentList.Where(t => t.FatherName.Contains(searchString));
+                        break;
+                    case "Gender":
+                        StudentList = StudentList.Where(t => t.Gender.Contains(searchString));
+                        break;
+                    case "ClassName":
+                        StudentList = StudentList.Where(t => t.ClassName.Contains(searchString));
+                        break;
+                }
+            }
             int totalRecords = StudentList.Count();
             var totalPages = (int)Math.Ceiling((float)totalRecords / (float)rows);
             if (sort.ToUpper() == "DESC")
